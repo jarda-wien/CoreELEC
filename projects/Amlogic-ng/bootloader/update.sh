@@ -43,6 +43,10 @@ for arg in $(cat /proc/cmdline); do
           *odroid_n2)
             SUBDEVICE="Odroid_N2"
             ;;
+          *khadas_vim3)
+            SUBDEVICE="Khadas_VIM3"
+            BOOT_DISK="/dev/mmcblk0"
+            ;;
         esac
       fi
 
