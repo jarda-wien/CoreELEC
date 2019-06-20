@@ -16,7 +16,6 @@ PKG_CMAKE_OPTS_TARGET="-DBUILD_SHARED_LIBS=1 \
                        -DCMAKE_INSTALL_LIBDIR_NOARCH:STRING=lib \
                        -DSKIP_PYTHON_WRAPPER=1 \
                        -DHAVE_IMX_API=0 \
-                       -DHAVE_AOCEC_API=0 -DHAVE_AMLOGIC_API=0 \
                        -DHAVE_GIT_BIN=0"
 
 if [ "$PROJECT" = "RPi" ]; then
