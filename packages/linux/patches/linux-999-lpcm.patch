@@ -1,0 +1,115 @@
+diff --git a/arch/arm64/boot/dts/amlogic/mesong12_odroid_common.dtsi b/arch/arm64/boot/dts/amlogic/mesong12_odroid_common.dtsi
+index 54b4075f9db0..e944256abdc0 100644
+--- a/arch/arm64/boot/dts/amlogic/mesong12_odroid_common.dtsi
++++ b/arch/arm64/boot/dts/amlogic/mesong12_odroid_common.dtsi
+@@ -97,35 +97,36 @@
+ 		/*for audio effect ,eqdrc */
+ 		aml-audio-card,effect = <&audio_effect>;
+ 
+-		/* spdif_b to hdmi, only playback */
+ 		aml-audio-card,dai-link@0 {
+-			mclk-fs = <128>;
+-			continuous-clock;
++			format = "i2s";
++			mclk-fs = <256>;
++			bitclock-master = <&aml_i2s2hdmi>;
++			frame-master = <&aml_i2s2hdmi>;
++			//continuous-clock;
++			//bitclock-inversion;
++			//frame-inversion;
+ 			cpu {
+-				sound-dai = <&aml_spdif_b>;
+-				system-clock-frequency = <6144000>;
++				sound-dai = <&aml_i2s2hdmi>;
++				dai-tdm-slot-rx-mask = <1 1 1 1 1 1 1 1>;
++				dai-tdm-slot-num = <8>;
++				dai-tdm-slot-width = <32>;
++				system-clock-frequency = <12288000>;
+ 			};
+ 			codec {
+ 				sound-dai = <&dummy_codec>;
+ 			};
+ 		};
+ 
++		/* spdif_b to hdmi, only playback */
+ 		aml-audio-card,dai-link@1 {
+-			format = "i2s";// "dsp_a";
+-			mclk-fs = <256>;
+-			bitclock-master = <&aml_tdmc>;
+-			frame-master = <&aml_tdmc>;
++			mclk-fs = <128>;
+ 			continuous-clock;
+ 			cpu {
+-				sound-dai = <&aml_tdmc>;
+-				dai-tdm-slot-tx-mask = <1 1>;
+-				dai-tdm-slot-rx-mask = <1 1>;
+-				dai-tdm-slot-num = <2>;
+-				dai-tdm-slot-width = <32>;
+-				system-clock-frequency = <12288000>;
++				sound-dai = <&aml_spdif_b>;
++				system-clock-frequency = <6144000>;
+ 			};
+ 			codec {
+-				sound-dai = <&amlogic_codec>;
++				sound-dai = <&dummy_codec>;
+ 			};
+ 		};
+ 
+@@ -391,7 +392,22 @@
+ 		clocks = <&clkaudio CLKID_AUDIO_MCLK_C
+ 				&clkc CLKID_MPLL2>;
+ 		clock-names = "mclk", "clk_srcpll";
+-		i2s2hdmi = <0>;
++		// i2s2hdmi = <0>;
++		status = "okay";
++	};
++
++	/* copy a useless tdm to output for hdmi, no pinmux */
++	aml_i2s2hdmi: i2s2hdmi {
++		compatible = "amlogic, g12a-snd-tdmc";
++		#sound-dai-cells = <0>;
++		dai-tdm-lane-slot-mask-out = <1 1 1 1>;
++		dai-tdm-clk-sel = <2>;
++		clocks = <&clkaudio CLKID_AUDIO_MCLK_C
++				&clkc CLKID_MPLL2>;
++		clock-names = "mclk", "clk_srcpll";
++
++		i2s2hdmi = <1>;
++
+ 		status = "okay";
+ 	};
+ 
+diff --git a/sound/soc/amlogic/auge/tdm.c b/sound/soc/amlogic/auge/tdm.c
+index 1b185f4048e7..a07c99aecad8 100644
+--- a/sound/soc/amlogic/auge/tdm.c
++++ b/sound/soc/amlogic/auge/tdm.c
+@@ -464,6 +464,8 @@ static int aml_dai_tdm_prepare(struct snd_pcm_substream *substream,
+ 					fr, p_tdm->samesource_sel,
+ 					p_tdm->lane_ss);
+ 		}
++		dev_info(p_tdm->dev, "%s: id:%d i2s2hdmitx:%d channels:%d\n", __func__,
++					p_tdm->id, p_tdm->i2s2hdmitx, runtime->channels);
+ 
+ 		/* i2s source to hdmix */
+ 		if (p_tdm->i2s2hdmitx) {
+@@ -1555,7 +1557,7 @@ static int aml_tdm_platform_probe(struct platform_device *pdev)
+ 
+ 	p_tdm->pin_ctl = devm_pinctrl_get_select(dev, "tdm_pins");
+ 	if (IS_ERR(p_tdm->pin_ctl)) {
+-		dev_info(dev, "aml_tdm_get_pins error!\n");
++		dev_info(dev, "no pins, output internal\n");
+ 		/*return PTR_ERR(p_tdm->pin_ctl);*/
+ 	}
+ 
+diff --git a/sound/soc/amlogic/auge/tdm_hw.c b/sound/soc/amlogic/auge/tdm_hw.c
+index 97dc1d593438..2d1aabe774f7 100644
+--- a/sound/soc/amlogic/auge/tdm_hw.c
++++ b/sound/soc/amlogic/auge/tdm_hw.c
+@@ -25,6 +25,7 @@
+ #define MST_CLK_INVERT_PH1_TDMIN_FCLK     (1 << 3)
+ #define MST_CLK_INVERT_PH2_TDMOUT_BCLK    (1 << 4)
+ #define MST_CLK_INVERT_PH2_TDMOUT_FCLK    (1 << 5)
++#define DEBUG
+ 
+ /*#define G12A_PTM_LB_INTERNAL*/
+ /*#define TL1_PTM_LB_INTERNAL*/
