@@ -42,8 +42,10 @@ umount_all() {
 }
 
 install_to_emmc() {
+if [[ ${SUBDEVICE} = "Odroid_N2" ]]; then
   # disable emmc_timeout
   toggle_emmc_timeout
+fi
 
   #stop kodi
   echo "Stopping Kodi..."
@@ -66,8 +68,8 @@ install_to_emmc() {
 
   # Flash u-boot
   echo "Flash Bootloader..."
-  dd if=/usr/share/bootloader/Odroid_N2_u-boot of=$BLKDEV conv=fsync bs=1 count=112 status=none
-  dd if=/usr/share/bootloader/Odroid_N2_u-boot of=$BLKDEV conv=fsync bs=512 skip=1 seek=1 status=none
+  dd if=/usr/share/bootloader/${1}_u-boot of=${BLKDEV} conv=fsync bs=1 count=112 status=none
+  dd if=/usr/share/bootloader/${1}_u-boot of=${BLKDEV} conv=fsync bs=512 skip=1 seek=1 status=none
   sync
 
   # create fs for new /flash
@@ -91,7 +93,7 @@ install_to_emmc() {
   echo "Copy /flash files to new flash partition..."
   cp -a /flash/* "${NEWBOOT}/"
   echo "Copy template boot.ini..."
-  cp -p /usr/share/bootloader/Odroid_N2_boot.ini ${NEWBOOT}/boot.ini
+  cp -p /usr/share/bootloader/${1}_boot.ini ${NEWBOOT}/boot.ini
   sync
 
   # set our new UUID's
@@ -126,31 +128,38 @@ fi
 
 case $DT_ID in
   *odroid_n2)
-    echo "Odroid_N2"
+    SUBDEVICE="Odroid_N2"
+    ;;
+  *khadas_vim3)
+    SUBDEVICE="Khadas_VIM3"
     ;;
   *)
-    echo "This script is only for Odroid_N2. It won't work on other devices!"
+    echo "This script is only for Odroid_N2/Khadas_VIM3. It won't work on other devices!"
     exit 1
     ;;
 esac
 
-if ! $(grep "^emmc_timeout=1$" /flash/config.ini >/dev/null); then
-  echo "This script will help you to install CoreELEC on a Odroid_N2 eMMC from"
-  echo "within a running CE on SD card or USB drive."
-  echo ""
-  echo "First we will set a 30s timout for u-boot."
-  echo "Please reboot CoreELEC from SD/USB without the eMMC plugged in."
-  echo "You will see the boot splash with the words: 30s: Please insert the eMMC."
-  echo "After the 30s timeout CoreELEC will boot as normal and you will have to run this"
-  echo "script again to continue. If you don't manage to insert the eMMC in time just reboot and try again."
-  read -p "Type \"yes\" if you know what you are doing or anything else to exit: " choice
-  case "$choice" in
-    yes) toggle_emmc_timeout && exit 0;;
-      *) exit 0 ;;
-  esac
+echo "Found device: " ${SUBDEVICE}
+
+if [[ ${SUBDEVICE} = "Odroid_N2" ]]; then
+  if ! $(grep "^emmc_timeout=1$" /flash/config.ini >/dev/null); then
+    echo "This script will help you to install CoreELEC on a Odroid_N2 eMMC from"
+    echo "within a running CE on SD card or USB drive."
+    echo ""
+    echo "First we will set a 30s timout for u-boot."
+    echo "Please reboot CoreELEC from SD/USB without the eMMC plugged in."
+    echo "You will see the boot splash with the words: 30s: Please insert the eMMC."
+    echo "After the 30s timeout CoreELEC will boot as normal and you will have to run this"
+    echo "script again to continue. If you don't manage to insert the eMMC in time just reboot and try again."
+    read -p "Type \"yes\" if you know what you are doing or anything else to exit: " choice
+    case "$choice" in
+      yes) toggle_emmc_timeout && exit 0;;
+        *) exit 0 ;;
+    esac
+  fi
 fi
 
-if [ -z "$BLKDEVNAME" ]; then
+if [ -z "${BLKDEVNAME}" ]; then
   echo "eMMC not found. Please reboot with your eMMC removed and insert it after the bootsplash appears."
   exit 0
 fi
@@ -160,6 +169,6 @@ echo "All data on this eMMC will be lost forever!"
 echo ""
 read -p "Type \"yes\" if you know what you are doing or anything else to exit: " choice
 case "$choice" in
-  yes) install_to_emmc ;;
+  yes) install_to_emmc ${SUBDEVICE} ;;
     *) exit 0 ;;
 esac
