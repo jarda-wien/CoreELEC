@@ -1,0 +1,543 @@
+From 6a6b0ae8c9367236d823c9cb03377f9d5678b08e Mon Sep 17 00:00:00 2001
+From: Arthur Liberman <arthur_liberman@hotmail.com>
+Date: Wed, 24 Jul 2019 02:27:29 +0300
+Subject: [PATCH] rebrand to coreelec, update skin, code remove images
+
+---
+ .../resources/strings.po                      |   4 +-
+ .../resource.language.en_gb/strings.po        |   4 +-
+ addons/skin.estouchy/xml/Includes.xml         |   2 +-
+ .../xml/IncludesPlayerControls.xml            |   2 +-
+ .../skin.estouchy/xml/SettingsSystemInfo.xml  |   2 +-
+ addons/skin.estuary/colors/classic.xml        |   8 ++
+ addons/skin.estuary/colors/defaults.xml       |  10 +--
+ addons/skin.estuary/colors/maroon.xml         |   8 --
+ .../resource.language.en_gb/strings.po        |   4 +-
+ addons/skin.estuary/media/icons/logo-text.png | Bin 1015 -> 0 bytes
+ addons/skin.estuary/media/icons/logo.png      | Bin 1139 -> 0 bytes
+ addons/skin.estuary/xml/Home.xml              |  20 ++---
+ .../skin.estuary/xml/SettingsSystemInfo.xml   |  71 +-----------------
+ privacy-policy.txt                            |  57 +-------------
+ system/peripherals.xml                        |   2 +-
+ version.txt                                   |   4 +-
+ xbmc/network/upnp/UPnP.cpp                    |  20 ++---
+ xbmc/windows/GUIWindowSystemInfo.cpp          |   3 +-
+ 18 files changed, 54 insertions(+), 167 deletions(-)
+ create mode 100644 addons/skin.estuary/colors/classic.xml
+ delete mode 100644 addons/skin.estuary/colors/maroon.xml
+ delete mode 100644 addons/skin.estuary/media/icons/logo-text.png
+ delete mode 100644 addons/skin.estuary/media/icons/logo.png
+
+diff --git a/addons/resource.language.en_gb/resources/strings.po b/addons/resource.language.en_gb/resources/strings.po
+index 78c7f0d80e..f0747ec093 100644
+--- a/addons/resource.language.en_gb/resources/strings.po
++++ b/addons/resource.language.en_gb/resources/strings.po
+@@ -615,7 +615,7 @@ msgstr ""
+ 
+ #: addons/skin.estuary/xml/SettingsSystemInfo.xml
+ msgctxt "#144"
+-msgid "Build:"
++msgid "Build"
+ msgstr ""
+ 
+ msgctxt "#145"
+@@ -749,7 +749,7 @@ msgstr ""
+ 
+ #: addons/skin.estuary/xml/SettingsSystemInfo.xml
+ msgctxt "#174"
+-msgid "Compiled:"
++msgid "Compiled"
+ msgstr ""
+ 
+ #: xbmc/dialogs/GUIDialogMediaFilter.cpp
+diff --git a/addons/skin.estouchy/language/resource.language.en_gb/strings.po b/addons/skin.estouchy/language/resource.language.en_gb/strings.po
+index 1d5c181171..246f8f8787 100644
+--- a/addons/skin.estouchy/language/resource.language.en_gb/strings.po
++++ b/addons/skin.estouchy/language/resource.language.en_gb/strings.po
+@@ -290,7 +290,7 @@ msgstr ""
+ #empty strings from id 31413 to 31420
+ 
+ msgctxt "#31421"
+-msgid "Select your Kodi user Profile[CR]to login and continue"
++msgid "Select your CoreELEC user Profile[CR]to login and continue"
+ msgstr ""
+ 
+ #empty strings from id 31422 to 31547
+@@ -379,7 +379,7 @@ msgid "There are two things to know about navigating Estouchy"
+ msgstr ""
+ 
+ msgctxt "#31902"
+-msgid "The Kodi logo functions as a 'HOME' button. Whenever you touch it, you will be taken back to the home screen."
++msgid "The CoreELEC logo functions as a 'HOME' button. Whenever you touch it, you will be taken back to the home screen."
+ msgstr ""
+ 
+ msgctxt "#31903"
+diff --git a/addons/skin.estouchy/xml/Includes.xml b/addons/skin.estouchy/xml/Includes.xml
+index b5c1354771..ad4b7acd5e 100644
+--- a/addons/skin.estouchy/xml/Includes.xml
++++ b/addons/skin.estouchy/xml/Includes.xml
+@@ -214,7 +214,7 @@
+ 				<onclick>ActivateWindow(Home)</onclick>
+ 			</control>
+ 			<control type="image">
+-				<description>Kodi Logo</description>
++				<description>CoreELEC Logo</description>
+ 				<posx>22</posx>
+ 				<posy>2</posy>
+ 				<width>150</width>
+diff --git a/addons/skin.estouchy/xml/IncludesPlayerControls.xml b/addons/skin.estouchy/xml/IncludesPlayerControls.xml
+index 5c4c7a5d66..05b9de0eac 100644
+--- a/addons/skin.estouchy/xml/IncludesPlayerControls.xml
++++ b/addons/skin.estouchy/xml/IncludesPlayerControls.xml
+@@ -23,7 +23,7 @@
+ 			<onclick>ActivateWindow(Home)</onclick>
+ 		</control>
+ 		<control type="image">
+-			<description>Kodi Logo</description>
++			<description>CoreELEC Logo</description>
+ 			<posx>22</posx>
+ 			<posy>2</posy>
+ 			<width>150</width>
+diff --git a/addons/skin.estouchy/xml/SettingsSystemInfo.xml b/addons/skin.estouchy/xml/SettingsSystemInfo.xml
+index 6ebad1751f..af1443e610 100644
+--- a/addons/skin.estouchy/xml/SettingsSystemInfo.xml
++++ b/addons/skin.estouchy/xml/SettingsSystemInfo.xml
+@@ -128,7 +128,7 @@
+ 				<posx>470r</posx>
+ 				<posy>190r</posy>
+ 				<control type="label" id="52">
+-					<description>Kodi Build Version</description>
++					<description>CoreELEC Build Version</description>
+ 					<posx>330</posx>
+ 					<posy>10</posy>
+ 					<width>740</width>
+diff --git a/addons/skin.estuary/colors/classic.xml b/addons/skin.estuary/colors/classic.xml
+new file mode 100644
+index 0000000000..91e8e69c61
+--- /dev/null
++++ b/addons/skin.estuary/colors/classic.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<colors>
++	<color name="primary_background">FF0E597E</color>
++	<color name="secondary_background">330BAA8E</color>
++	<color name="dialog_tint">FF1A2123</color>
++	<color name="button_focus">FF12A0C7</color>
++	<color name="selected">FF11E7B1</color>
++</colors>
+diff --git a/addons/skin.estuary/colors/defaults.xml b/addons/skin.estuary/colors/defaults.xml
+index bf5d7b166d..14f2aa763c 100644
+--- a/addons/skin.estuary/colors/defaults.xml
++++ b/addons/skin.estuary/colors/defaults.xml
+@@ -1,8 +1,8 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <colors>
+-	<color name="primary_background">FF0E597E</color>
+-	<color name="secondary_background">330BAA8E</color>
+-	<color name="dialog_tint">FF1A2123</color>
++	<color name="primary_background">FF6B1414</color>
++	<color name="secondary_background">33DB2C83</color>
++	<color name="dialog_tint">FF262020</color>
+ 	<color name="background">FF000000</color>
+ 	<color name="bg_image">FF909090</color>
+ 	<color name="bg_overlay">30FFFFFF</color>
+@@ -11,10 +11,10 @@
+ 	<color name="grey">FFA0A0A0</color>
+ 	<color name="blue">FF7ACAFE</color>
+ 	<color name="red">FFCE4421</color>
+-	<color name="button_focus">FF12A0C7</color>
++	<color name="button_focus">FFC40300</color>
+ 	<color name="text_shadow">22000000</color>
+ 	<color name="border_alpha">60FFFFFF</color>
+ 	<color name="disabled">40FFFFFF</color>
+-	<color name="selected">FF11E7B1</color>
++	<color name="selected">FF24C6C9</color>
+ 	<color name="invalid">FFFF0000</color>
+ </colors>
+diff --git a/addons/skin.estuary/colors/maroon.xml b/addons/skin.estuary/colors/maroon.xml
+deleted file mode 100644
+index e4dbcc5e87..0000000000
+--- a/addons/skin.estuary/colors/maroon.xml
++++ /dev/null
+@@ -1,8 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<colors>
+-	<color name="primary_background">FF6B1414</color>
+-	<color name="secondary_background">33DB2C83</color>
+-	<color name="dialog_tint">FF262020</color>
+-	<color name="button_focus">FFC40300</color>
+-	<color name="selected">FF24C6C9</color>
+-</colors>
+diff --git a/addons/skin.estuary/language/resource.language.en_gb/strings.po b/addons/skin.estuary/language/resource.language.en_gb/strings.po
+index 6f46bc2e81..6cd9125751 100644
+--- a/addons/skin.estuary/language/resource.language.en_gb/strings.po
++++ b/addons/skin.estuary/language/resource.language.en_gb/strings.po
+@@ -428,7 +428,7 @@ msgstr ""
+ 
+ #: /xml/LoginScreen.xml
+ msgctxt "#31098"
+-msgid "Select your Kodi user profile[CR]to login and continue"
++msgid "Select your CoreELEC user profile[CR]to login and continue"
+ msgstr ""
+ 
+ #. viewtype name
+@@ -530,7 +530,7 @@ msgstr ""
+ 
+ #: /xml/Home.xml
+ msgctxt "#31119"
+-msgid "You do not have any add-ons installed yet. Visit our add-on browser to browse through our collection and improve your Kodi experience."
++msgid "You do not have any add-ons installed yet. Visit our add-on browser to browse through our collection and improve your CoreELEC experience."
+ msgstr ""
+ 
+ #: /xml/Home.xml
+diff --git a/addons/skin.estuary/media/icons/logo-text.png b/addons/skin.estuary/media/icons/logo-text.png
+deleted file mode 100644
+index d263e42edbb011e1acf8556e479b6396ccf024be..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 1015
+zcmV<T0|@+yP)<h;3K|Lk000e1NJLTq003|R001Ni1ONa4`}TGr000BNNkl<ZSi{ws
+zOKeP09L8@ALz`eh#UP<2ghZ^Q2uWX7Vuk3~kf`^Hjg`mJD|RH5hNNv`LoDn>yU>}Y
+zswHSE781fjrU_wCk@;CPnfpKY-gED{4`R;QOme^bo%7u}|L3vDF*R~nfwPKB*kh8J
+z8eAQR>EbB`CYhwbQ@S`zoxut@^y34A+@PIBA$W3@AP9OXO}9Y*=9mX2MV5X_o*OLD
+zPnMML8YZJeFFToL#$zsU4i5$PCp$bat&9b3Z;aNM0;k4vnv)cmVMHLm(&9qQ;+pa1
+zt}!dNKqzrVYa}5BuHvo06<F^=)G`=qbA!~z76_1Metdx&C<xR$R(r@BcP#vx^R$p5
+zO_~fXoaeOzG43f*zZ)ITOMjkVf!ir67PQobs9``^vX3pEOk3zva0AqY5a`EK9bI5M
+zzXf8*^J{eo#19Tp<r8KO@k5|HA_;W!T#YL5jPj)(G27E~+GB!^fx%`Y6XK25NCMqF
+zTf+-Xab1yj&(rfwW3-GY(qIsREgHn3A9KV-bAc+)DAU6Utl_>Q@1`a|X9cF+NZ!=J
+zw?{UzK$T~A7=iN~Dbq!*T|E}ArOH@fm2eaNF$7AUoVmbdN<LEJq;`Qik(6yVmS<tH
+zS@73K7O3*nnF(CSM<wI*J9tORxM!i{Sy((Pzk4Kxz(5`+Wiwxt!};DLR@t+wj5{4#
+z;OX+aU9kk(Jl(+p+n97EL$`d$?fkSUw7|ylyTh>r+B_pc0*`CToV{9dJB7=H7MKyy
+zGmgLj9$k9-P5dshMni7@-|5f-)1q*WBQSu+($s9rmFnP?#u6)3;1g=GSi+}3ORUHv
+zYG<5{N}|2@uQ{2Kf8}HV?kY9%i2zINju9qKB@`x3nTH9ljPs7KC01CVzu=Kg*6_l|
+z66-55Rddc2eD<-#sL6J3LdkY-lw{jEw~7DBX^FC2I%q8LU_#}R<Y|l3RXeM-#FVH!
+zDyrah9)$;5OKepdiVX(aDwwnylHxI?oXZ=5+^0P26i>bfHl2!!*N)zFDkjl%l5?$~
+zR4vinHr(XNut~UtIBmmFJYf#SZh;+DNZpO!G0xG%LS`_7g*0)_b!!o}@vGx`6}Ry#
+z=VgJutvp%4P^gys5DOA%-47(ux|cq)Piu+Qm3;Xk5951bi7OpXx4Mq1dyKn0-hXj@
+zX3zDa3e3AaW{NC1O=kdd>`CYXbeH)BXuiBz(>!FqSZuMTop_WUhAHriUlbUohoeSU
+l*!h4f>`o47*7WAd{{i!$1IJeHOfvug002ovPDHLkV1g`u;wS(B
+
+diff --git a/addons/skin.estuary/media/icons/logo.png b/addons/skin.estuary/media/icons/logo.png
+deleted file mode 100644
+index 5b3796ecce11569eae5e4e164606fa638ee4c9d6..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 1139
+zcmV-(1dRKMP)<h;3K|Lk000e1NJLTq003|R003|Z1ONa4Z0S6}000C!Nkl<Zc-rmT
+z&r4KM6bJB|1eq<gAJV1>QGymOiiyZvM2m{3HU(|k1TCeOh1jBhAR;1iQ3x$s)h1{W
+z7?cD;WRns_QA#P4CYmHxh~E~YInBHu=iT=`)0uJ3ESwqUzImU8@7{O5cN|>F9{ceS
+zKQWC*I8?fCE!7vT#ZBZ_H`Z1XumOE2tUfeU3UD*B2&$LZR0+VXc#E*g>Jznj%@{^h
+zsS|a1J1~a0QYLEhc47jOQYGr~+AsxaDH64K2k-+)N{y()JBm3ZEhVA`?-YK)r&Nf1
+z-Wklpw-ktMUI!MCrsza2?;_F{naJcF0jH=$9<K(k!KxRiw+B1{X7!=g8t?(Q)ol&<
+z9qc-23&^kDN(W9?I`Ctq1G_34_=?k5v<e(Yv$bi0dwI#&TgmWh2JIHtq9%FvfMlLE
+zAf0CmsKB!XRN+a1tI&Zlj9{A@P>Cl4*5KCSX<SnRN_n;D#4zUZ94DE;8+pqo4WN|Q
+zf}y-oJ+h@-{6{+T4*E?2DCO-cigKPwGUB)ooG&;i8z|+qV>)2;02<Q)&la_Dxj;E@
+zCbY%a=np&{(1d3K)AIzxs5W3w#=rw|c(KIrE_HB1!~*hoF~qR=ayH~p93Yn$Nem93
+zXG0If0P=Ye#NxLyffr;RP=^;vEPSIiW@kiNpdK%T`0vZ@_!4u7bU<BRATj?%6F$ct
+zAPrET7eHKox&<Eu!~KD!;S~{=o-{^mnPUJ;$15P_{;bEKaHt<p%4?(Wa>NbGz%}R>
+z5A*>_dAlPgsHD}8x+UP%1jCX8<+rmF;MVmVaBrfWElGh=UOnE^<C_KSgLAl-Xizes
+zyp?nX8g(DeVUz@%Pt_?KQvpuGxrEoP@Kc;j)d>8g0{ji<&`Sairs{KERslYNb2v@{
+zcISO+DsdaPPPouWR>yMF#9az-&)=)@JG6TApj$9b=JhPigLRaN-r*d^@CKK#&a=&)
+z(VFNT8bW@Xk_^b$$j)1;Z7f`DXAJ<=7Ta>7D+6NS?UIz}%o9Uzcx6OqoEX`%kPw||
+zVr<hXp6Cn{MQy`4qW=jePiK`HztKcro>w}n)w+)&`tdx|S-tQjoap!8<eAQD#%Ezf
+z=EWjQA$kX(!9?!0Fg-C<gk4OWqhIRfM3qelg~SnsnM_Jl+D4M=dp}(~<Q<iXT1srf
+zK;Ed^vLFA*PIfiA@D-y8?$jxhbiiWa0){Y&$2k0df5S^!W?B6WFKwZ06G*((u?VEz
+ztl9&T+YQ!$^oEfwph7xp38<3J+5sx1vsQp=>8ur?S~_b5sFu!J0jj05R)A{htQDYI
+zI%{c~P)TPkP4t<{p6Hd*+3I4udb?D;;jOkTR$$X<1+)$I8o!2s8m)U{Kz8_I5Xg+r
+zi~?B!s9_)@!Zr>}y9uETfN8dolnKx?oh>JzS31jh`~k+9^q*ltifI4<002ovPDHLk
+FV1iO&4HW<Y
+
+diff --git a/addons/skin.estuary/xml/Home.xml b/addons/skin.estuary/xml/Home.xml
+index 6964c72db6..a02c4da7d8 100644
+--- a/addons/skin.estuary/xml/Home.xml
++++ b/addons/skin.estuary/xml/Home.xml
+@@ -1066,21 +1066,21 @@
+ 				<animation effect="slide" end="0,-90" time="300" tween="sine" easing="inout" condition="$EXP[infodialog_active]">conditional</animation>
+ 				<animation effect="fade" start="0" end="100" time="300">WindowOpen</animation>
+ 				<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
+-				<top>30</top>
+-				<left>90</left>
++				<top>22</top>
++				<left>95</left>
+ 				<control type="image">
+ 					<aspectratio>keep</aspectratio>
+-					<width>56</width>
+-					<height>56</height>
+-					<texture colordiffuse="button_focus">icons/logo.png</texture>
++					<left>10</left>
++					<width>261</width>
++					<height>80</height>
++					<texture>icons/logo-text-withcenter.png</texture>
+ 				</control>
+ 				<control type="image">
+-					<left>40</left>
+-					<top>10</top>
+ 					<aspectratio>keep</aspectratio>
+-					<width>192</width>
+-					<height>36</height>
+-					<texture>icons/logo-text.png</texture>
++					<top>1</top>
++					<width>73</width>
++					<height>80</height>
++					<texture colordiffuse="button_focus">icons/logo-nocenter.png</texture>
+ 				</control>
+ 			</control>
+ 		</control>
+diff --git a/addons/skin.estuary/xml/SettingsSystemInfo.xml b/addons/skin.estuary/xml/SettingsSystemInfo.xml
+index 66282d356c..19c0567633 100644
+--- a/addons/skin.estuary/xml/SettingsSystemInfo.xml
++++ b/addons/skin.estuary/xml/SettingsSystemInfo.xml
+@@ -126,7 +126,7 @@
+ 					<orientation>vertical</orientation>
+ 					<control type="label">
+ 						<description>CPU Text</description>
+-						<width>730</width>
++						<width>1420</width>
+ 						<height>80</height>
+ 						<label>$LOCALIZE[13271] $INFO[System.CPUUsage]</label>
+ 						<aligny>top</aligny>
+@@ -136,13 +136,13 @@
+ 					</control>
+ 					<control type="progress">
+ 						<description>CPU BAR</description>
+-						<width>730</width>
++						<width>1420</width>
+ 						<height>16</height>
+ 						<info>System.CPUUsage</info>
+ 					</control>
+ 					<control type="label">
+ 						<description>Memory Text</description>
+-						<width>730</width>
++						<width>1420</width>
+ 						<height>40</height>
+ 						<label>$LOCALIZE[31030]: $INFO[system.memory(used)] [B]/[/B] $INFO[system.memory(total)] [B]-[/B] $INFO[system.memory(used.percent)]</label>
+ 						<aligny>center</aligny>
+@@ -151,74 +151,11 @@
+ 					</control>
+ 					<control type="progress">
+ 						<description>Memory BAR</description>
+-						<width>730</width>
++						<width>1420</width>
+ 						<height>16</height>
+ 						<info>system.memory(used)</info>
+ 					</control>
+ 				</control>
+-				<control type="label">
+-					<top>34</top>
+-					<left>1210</left>
+-					<width>auto</width>
+-					<height>50</height>
+-					<aligny>bottom</aligny>
+-					<textoffsety>10</textoffsety>
+-					<label>$LOCALIZE[31031]:</label>
+-					<shadowcolor>black</shadowcolor>
+-					<font>font25_title</font>
+-				</control>
+-				<control type="grouplist">
+-					<description>Kodi build version</description>
+-					<itemgap>10</itemgap>
+-					<top>80</top>
+-					<left>1210</left>
+-					<width>820</width>
+-					<height>45</height>
+-					<orientation>horizontal</orientation>
+-					<control type="label">
+-						<description>Build label</description>
+-						<width>auto</width>
+-						<height>50</height>
+-						<aligny>bottom</aligny>
+-						<font>font12</font>
+-						<textoffsety>10</textoffsety>
+-						<label>$LOCALIZE[144]</label>
+-						<shadowcolor>black</shadowcolor>
+-					</control>
+-					<control type="label" id="52">
+-						<description>Kodi Build Version</description>
+-						<height>50</height>
+-						<aligny>bottom</aligny>
+-						<textoffsety>10</textoffsety>
+-						<font>font12</font>
+-						<width>auto</width>
+-						<textcolor>button_focus</textcolor>
+-						<shadowcolor>black</shadowcolor>
+-					</control>
+-				</control>
+-				<control type="grouplist">
+-					<description>Build date</description>
+-					<itemgap>10</itemgap>
+-					<top>125</top>
+-					<left>1210</left>
+-					<width>800</width>
+-					<orientation>horizontal</orientation>
+-					<control type="label">
+-						<description>kodi Compiled Text</description>
+-						<width>auto</width>
+-						<height>25</height>
+-						<label>$LOCALIZE[174]</label>
+-						<font>font12</font>
+-						<shadowcolor>black</shadowcolor>
+-					</control>
+-					<control type="label" id="53">
+-						<description>Kodi Build Date</description>
+-						<width>auto</width>
+-						<font>font12</font>
+-						<textcolor>button_focus</textcolor>
+-						<shadowcolor>black</shadowcolor>
+-					</control>
+-				</control>
+ 			</control>
+ 		</control>
+ 		<control type="group">
+diff --git a/privacy-policy.txt b/privacy-policy.txt
+index 3c889717d1..3392248d2d 100644
+--- a/privacy-policy.txt
++++ b/privacy-policy.txt
+@@ -1,55 +1,4 @@
+-[B]Kodi Privacy Policy[/B]
+-[I]2016 Oct 23[/I]
+-
+-Your privacy is an important factor that the XBMC Foundation and Team Kodi considers in the development of all of our software and services. We are committed to being transparent and open. This Privacy Policy explains generally how we receive information about you, and what we do with that information once we have it.
+-
+-
+-[B]What do we mean by “personal information?”[/B]
+-
+-For us, “personal information” means information which identifies you, like your name or email address.
+-
+-Any information that falls outside of this is “non-personal information.”
+-
+-If we store your personal information with information that is non-personal, we will consider the combination as personal information. If we remove all personal information from a set of data then the remaining is non-personal information.
+-
+-
+-[B]How do we learn information about you?[/B]
+-
+-We learn information about you when:
+-
+-    • you give it to us directly (e.g., when you choose to send us logs in the forums);
+-    • we collect it automatically through our software and services (e.g., when your Kodi connects with our servers to update add-ons, or in download statistics provided by Google Play);
+-    • when we try and understand more about you based on information you’ve given to us (e.g., when we use your platform information provided to the add-on server to figure out which platforms use Kodi the most, to better understand where we should focus our efforts).
+-
+-
+-[B]What do we do with your information once we have it?[/B]
+-
+-Generally, we use your information to help us provide and improve our software and services for you (e.g., we use a log you send us to figure out why Kodi isn’t playing a video right or why it might have crashed, or we determine how many active users are using each platform in order to determine how to allocate resources per platform).
+-
+-
+-[B]When do we share your information with others?[/B]
+-
+-    • When we have asked and received your permission to share it.
+-    • When we are fulfilling our educational purpose. We sometimes publicly release information to make our software better and foster an open web, but when we do so, we will remove your personal information and try to disclose it in a way that minimizes the risk of you being re-identified. For example, in a blog post we might attempt to analyze from available data how many active users of Kodi existed at the time and share that info with the community.
+-    • When the law requires it. To date, this has never happened, and we do not anticipate it happening in the future, as the majority of the information we collect is already almost entirely anonymous and never shows unique user behavior, except in voluntarily submitted logs on our forum.
+-    • If our organizational structure or status changes (if we undergo a restructuring, are acquired, or go bankrupt) we may pass your information to a successor or affiliate.
+-
+-
+-[B]How do we store and protect your personal information?[/B]
+-
+-We are committed to protecting your personal information once we have it. We implement physical, business and technical security measures. Despite our efforts, if we learn of a security breach, we’ll notify you so that you can take appropriate protective steps.
+-
+-We also don’t want your personal information for any longer than we need it, so we only keep it long enough to do what we collected it for. Once we don’t need it, we take steps to destroy it unless we are required by law to keep it longer. In the case of logs provided to us in the forums, our servers do not store those logs, and we rely on the users submitting those logs to remove the links when they deem appropriate.
+-
+-
+-[B]What else should you know?[/B]
+-
+-We’re a global organization and our computers are in several different places around the world. We also use service providers whose computers may also be in various countries. This means that your information might end up on one of those computers in another country, and that country may have a different level of data protection regulation than yours. By giving us information, you consent to this kind of transfer of your information. No matter what country your information is in, we comply with applicable law and will also abide by the commitments we make in this privacy policy.
+-
+-If you are under 13, we don’t want your personal information, and you must not provide it to us. If you are a parent and believe that your child who is under 13 has provided us with personal information, please contact us to have your child’s information removed.
+-
+-
+-[B]What if we change this privacy policy or any of our privacy notices?[/B]
+-
+-We may need to change this policy and our notices. The updates will be posted online. If the changes are substantive, we will announce the update through Kodi’s usual channels for such announcements such as blog posts and forums. Your continued use of the product or service after the effective date of such changes constitutes your acceptance of such changes. To make your review more convenient, we will post an effective date at the top of the page.
++[B]CoreELEC Privacy Policy[/B]
++[I]2018 Sep 21[/I]
+ 
++For our most up-to date privacy policy please visit https://discourse.coreelec.org/privacy.
+diff --git a/system/peripherals.xml b/system/peripherals.xml
+index ff303e99ae..9969995ce2 100644
+--- a/system/peripherals.xml
++++ b/system/peripherals.xml
+@@ -27,7 +27,7 @@
+     <setting key="power_avr_on_as" type="bool" label="36046" value="0" order="15" />
+ 
+     <setting key="tv_vendor" type="int" value="0" configurable="0" />
+-    <setting key="device_name" type="string" value="Kodi" configurable="0" />
++    <setting key="device_name" type="string" value="CoreELEC" configurable="0" />
+     <setting key="device_type" type="int" value="1" configurable="0" />
+     <setting key="wake_devices_advanced" type="string" value="" configurable="0" />
+     <setting key="standby_devices_advanced" type="string" value="" configurable="0" />
+diff --git a/version.txt b/version.txt
+index 00fdd027b2..63888e8375 100644
+--- a/version.txt
++++ b/version.txt
+@@ -1,7 +1,7 @@
+-APP_NAME Kodi
++APP_NAME Kodi
+ COMPANY_NAME XBMC Foundation
+ COPYRIGHT_YEARS 2005-2019
+-WEBSITE http://kodi.tv
++WEBSITE http://coreelec.org
+ VERSION_MAJOR 18
+ VERSION_MINOR 3
+ VERSION_TAG
+diff --git a/xbmc/network/upnp/UPnP.cpp b/xbmc/network/upnp/UPnP.cpp
+index d6d09bccdd..1590b98fb2 100644
+--- a/xbmc/network/upnp/UPnP.cpp
++++ b/xbmc/network/upnp/UPnP.cpp
+@@ -631,12 +631,12 @@ CUPnP::CreateServer(int port /* = 0 */)
+                     CServiceBroker::GetSettingsComponent()->GetSettings()->GetInt(CSettings::SETTING_SERVICES_WEBSERVERPORT),
+                     "/").ToString();
+ 
+-    device->m_ModelName        = "Kodi";
++    device->m_ModelName        = "CoreELEC";
+     device->m_ModelNumber      = CSysInfo::GetVersion().c_str();
+-    device->m_ModelDescription = "Kodi - Media Server";
+-    device->m_ModelURL         = "http://kodi.tv/";
+-    device->m_Manufacturer     = "XBMC Foundation";
+-    device->m_ManufacturerURL  = "http://kodi.tv/";
++    device->m_ModelDescription = "CoreELEC - Media Server";
++    device->m_ModelURL         = "https://coreelec.org/";
++    device->m_Manufacturer     = "CoreELEC";
++    device->m_ManufacturerURL  = "https://coreelec.org/";
+ 
+     device->SetDelegate(device);
+     return device;
+@@ -715,12 +715,12 @@ CUPnP::CreateRenderer(int port /* = 0 */)
+         NPT_HttpUrl(m_IP.c_str(),
+                     CServiceBroker::GetSettingsComponent()->GetSettings()->GetInt(CSettings::SETTING_SERVICES_WEBSERVERPORT),
+                     "/").ToString();
+-    device->m_ModelName        = "Kodi";
++    device->m_ModelName        = "CoreELEC";
+     device->m_ModelNumber      = CSysInfo::GetVersion().c_str();
+-    device->m_ModelDescription = "Kodi - Media Renderer";
+-    device->m_ModelURL         = "http://kodi.tv/";
+-    device->m_Manufacturer     = "XBMC Foundation";
+-    device->m_ManufacturerURL  = "http://kodi.tv/";
++    device->m_ModelDescription = "CoreELEC - Media Renderer";
++    device->m_ModelURL         = "https://coreelec.org/";
++    device->m_Manufacturer     = "CoreELEC";
++    device->m_ManufacturerURL  = "https://coreelec.org/";
+ 
+     return device;
+ }
+diff --git a/xbmc/windows/GUIWindowSystemInfo.cpp b/xbmc/windows/GUIWindowSystemInfo.cpp
+index 3bde0c9181..651879fb85 100644
+--- a/xbmc/windows/GUIWindowSystemInfo.cpp
++++ b/xbmc/windows/GUIWindowSystemInfo.cpp
+@@ -95,9 +95,10 @@ void CGUIWindowSystemInfo::FrameMove()
+     SetControlLabel(i++, "%s: %s", 150, NETWORK_IP_ADDRESS);
+     SetControlLabel(i++, "%s %s", 13287, SYSTEM_SCREEN_RESOLUTION);
+     SetControlLabel(i++, "%s %s", 13283, SYSTEM_OS_VERSION_INFO);
++    SetControlLabel(i++, "%s: %s", 144, SYSTEM_BUILD_VERSION);
++    SetControlLabel(i++, "%s: %s", 174, SYSTEM_BUILD_DATE);
+     SetControlLabel(i++, "%s: %s", 12390, SYSTEM_UPTIME);
+     SetControlLabel(i++, "%s: %s", 12394, SYSTEM_TOTALUPTIME);
+-    SetControlLabel(i++, "%s: %s", 12395, SYSTEM_BATTERY_LEVEL);
+   }
+ 
+   else if (m_section == CONTROL_BT_STORAGE)
+-- 
+2.20.1.windows.1
+
